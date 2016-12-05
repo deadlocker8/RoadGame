@@ -1,0 +1,84 @@
+package de.deadlocker8.roadgame.logic;
+
+import javafx.geometry.Point2D;
+
+public class Tile
+{
+	private EdgeType N;
+	private EdgeType E;
+	private EdgeType S;
+	private EdgeType W;	
+	private Point2D position;
+	
+	public Tile(EdgeType N, EdgeType E, EdgeType S, EdgeType W, int x, int y)
+	{		
+		this.N = N;
+		this.E = E;
+		this.S = S;
+		this.W = W;
+		this.position = new Point2D(x, y);
+	}
+	
+	public Tile(EdgeType N, EdgeType E, EdgeType S, EdgeType W)
+	{		
+		this.N = N;
+		this.E = E;
+		this.S = S;
+		this.W = W;
+		this.position = null;
+	}	
+
+	public EdgeType getN()
+	{
+		return N;
+	}
+
+	public EdgeType getE()
+	{
+		return E;
+	}
+
+	public EdgeType getS()
+	{
+		return S;
+	}
+
+	public EdgeType getW()
+	{
+		return W;
+	}		
+	
+	public Point2D getPosition()
+	{
+		return position;
+	}
+
+	public void setPosition(Point2D position)
+	{
+		this.position = position;
+	}
+
+	public void rotateRight()
+	{
+		EdgeType temp = N;
+		N = W;
+		W = S;
+		S = E;
+		E = temp;
+	}
+	
+	public void rotateLeft()
+	{
+		EdgeType temp = N;
+		N = E;
+		E = S;
+		S = W;
+		W = temp;
+	}
+
+	@Override
+	public String toString()
+	{
+		return "Tile [N=" + N + ", E=" + E + ", S=" + S + ", W=" + W + ", position=" + position + "]";
+	}
+}
