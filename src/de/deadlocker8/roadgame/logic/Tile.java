@@ -81,4 +81,32 @@ public class Tile
 	{
 		return "Tile [N=" + N + ", E=" + E + ", S=" + S + ", W=" + W + ", position=" + position + "]";
 	}
+	
+	public String toShortString()
+	{
+		String result = "";
+		
+		
+		if(N.equals(EdgeType.ROAD))
+		{
+			result += "N";
+		}
+		
+		if(E.equals(EdgeType.ROAD))
+		{
+			result += "E";
+		}
+		
+		if(S.equals(EdgeType.ROAD))
+		{
+			result += "S";
+		}
+		
+		if(W.equals(EdgeType.ROAD))
+		{
+			result += "W";
+		}
+				
+		return result;
+	}
 }

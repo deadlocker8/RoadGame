@@ -29,6 +29,19 @@ public class Board
 		return tiles;
 	}
 	
+	public Tile getTile(int x, int y)
+	{
+		for(Tile currentTile : tiles)
+		{
+			if((int)currentTile.getPosition().getX() == x && (int)currentTile.getPosition().getY() == y)
+			{
+				return currentTile;
+			}
+		}
+		
+		return null;
+	}
+	
 	public boolean containsTileAtPosition(int x, int y)
 	{
 		for(Tile currentTile : tiles)

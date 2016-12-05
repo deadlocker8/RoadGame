@@ -8,12 +8,17 @@ public class Game
 {
 	private Board board;
 	private PossibleTiles possibleTiles;
+	private Tile currentTile;
 	
 	public Game()
 	{
 		board = new Board();
-		possibleTiles = new PossibleTiles();	
-		System.out.println(board);
+		possibleTiles = new PossibleTiles();			
+	}
+	
+	public Board getBoard()
+	{
+		return board;
 	}
 	
 	public Tile getNextTile()
@@ -21,6 +26,16 @@ public class Game
 		return possibleTiles.getRandomTile();		
 	}
 	
+	public void setCurrentTile(Tile currentTile)
+	{
+		this.currentTile = currentTile;
+	}
+
+	public Tile getCurrentTile()
+	{
+		return currentTile;
+	}
+
 	public ArrayList<Point2D> getPossibleLocations(Tile tile)
 	{
 		return board.getPossibleLocations(tile);
@@ -30,21 +45,5 @@ public class Game
 	{
 		tile.setPosition(position);
 		board.addTile(tile);
-	}
-	
-	public static void main(String[] args)
-	{
-		Game g = new Game();
-		Tile t = g.getNextTile();
-		System.out.println(t);
-		System.out.println(g.getPossibleLocations(t));
-		System.out.println(g.board.getWidth());
-		System.out.println(g.board.getHeight());
-		
-		g.placeTile(t, g.getPossibleLocations(t).get(0));
-		System.out.println(g.board);
-		
-		System.out.println(g.board.getWidth());
-		System.out.println(g.board.getHeight());
 	}
 }
