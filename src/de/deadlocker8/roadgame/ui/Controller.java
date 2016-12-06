@@ -7,6 +7,7 @@ import java.util.ResourceBundle;
 import de.deadlocker8.roadgame.logic.Board;
 import de.deadlocker8.roadgame.logic.EdgeType;
 import de.deadlocker8.roadgame.logic.Game;
+import de.deadlocker8.roadgame.logic.Textures;
 import de.deadlocker8.roadgame.logic.Tile;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -23,8 +24,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
-import tools.Worker;
 
 public class Controller
 {
@@ -32,25 +31,16 @@ public class Controller
 	@FXML private StackPane stackPaneCurrentTile;
 	@FXML private Button buttonRotate;
 	@FXML private ScrollPane scrollPane;
-
-	private Stage stage;
+	
 	private Image icon = new Image("de/deadlocker8/roadgame/resources/icon.png");
 	private final ResourceBundle bundle = ResourceBundle.getBundle("de/deadlocker8/roadgame/main/", Locale.GERMANY);
 	private GridPane grid;
 	private Game game;	
+	private Textures textures;
 
 	public void init(Stage stage)
-	{
-		this.stage = stage;
-
-		stage.setOnCloseRequest(new EventHandler<WindowEvent>()
-		{
-			public void handle(WindowEvent event)
-			{
-				Worker.shutdown();
-				System.exit(0);
-			};
-		});
+	{	
+		textures = new Textures();
 		
 		anchorPaneGame.setStyle("-fx-border-color: #333333; -fx-border-width: 2px");
 		stackPaneCurrentTile.setStyle("-fx-border-color: #333333; -fx-border-width: 2px");
@@ -136,13 +126,13 @@ public class Controller
 	{
 		StackPane stack = new StackPane();	
 		
-		stack.getChildren().add(new ImageView(new Image("de/deadlocker8/roadgame/resources/empty.png")));
+		stack.getChildren().add(new ImageView(textures.getImageEmpty()));
 		
 		if(tile == null)
 		{
 			if(possible)
 			{
-				stack.getChildren().add(new ImageView(new Image("de/deadlocker8/roadgame/resources/border.png")));	
+				stack.getChildren().add(new ImageView(textures.getImageBorder()));	
 				stack.setOnMouseClicked(new EventHandler<MouseEvent>()
 				{
 					@Override
@@ -158,31 +148,31 @@ public class Controller
 		}
 		else
 		{
-			stack.getChildren().add(new ImageView(new Image("de/deadlocker8/roadgame/resources/green.png")));	
+			stack.getChildren().add(new ImageView(textures.getImageGrass()));	
 			
 			if(tile.getN().equals(EdgeType.ROAD))
 			{			
-				ImageView imageViewRoadNorth = new ImageView(new Image("de/deadlocker8/roadgame/resources/road.png"));					
+				ImageView imageViewRoadNorth = new ImageView(textures.getImageRoad());					
 				stack.getChildren().add(imageViewRoadNorth);
 			}	
 			
 			if(tile.getE().equals(EdgeType.ROAD))
 			{			
-				ImageView imageViewRoadEast = new ImageView(new Image("de/deadlocker8/roadgame/resources/road.png"));	
+				ImageView imageViewRoadEast = new ImageView(textures.getImageRoad());	
 				imageViewRoadEast.setRotate(90);
 				stack.getChildren().add(imageViewRoadEast);
 			}	
 			
 			if(tile.getS().equals(EdgeType.ROAD))
 			{			
-				ImageView imageViewRoadSouth = new ImageView(new Image("de/deadlocker8/roadgame/resources/road.png"));	
+				ImageView imageViewRoadSouth = new ImageView(textures.getImageRoad());	
 				imageViewRoadSouth.setRotate(180);
 				stack.getChildren().add(imageViewRoadSouth);
 			}	
 			
 			if(tile.getW().equals(EdgeType.ROAD))
 			{			
-				ImageView imageViewRoadWest = new ImageView(new Image("de/deadlocker8/roadgame/resources/road.png"));	
+				ImageView imageViewRoadWest = new ImageView(textures.getImageRoad());	
 				imageViewRoadWest.setRotate(270);
 				stack.getChildren().add(imageViewRoadWest);
 			}	
