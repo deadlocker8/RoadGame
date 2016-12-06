@@ -35,7 +35,7 @@ public class PossibleTiles
 		{
 			tile.rotateRight();
 		}
-		
+	
 		return tile;
 	}
 }

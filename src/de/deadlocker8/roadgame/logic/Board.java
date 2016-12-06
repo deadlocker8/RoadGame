@@ -65,36 +65,48 @@ public class Board
 		//North
 		if(!containsTileAtPosition(x, y-1))
 		{	
-			if(tile.getN().equals(playerTile.getS()))
+			if(!tile.getN().equals(EdgeType.GRASS))
 			{
-				freeEdges.add(new Point2D(x, y-1));
+				if(tile.getN().equals(playerTile.getS()))
+				{
+					freeEdges.add(new Point2D(x, y-1));
+				}
 			}
 		}
 		
 		//East
 		if(!containsTileAtPosition(x+1, y))
 		{
-			if(tile.getE().equals(playerTile.getW()))
+			if(!tile.getE().equals(EdgeType.GRASS))
 			{
-
-			}freeEdges.add(new Point2D(x+1, y));
+				if(tile.getE().equals(playerTile.getW()))
+				{
+					freeEdges.add(new Point2D(x+1, y));
+				}
+			}
 		}
 				
 		//South
 		if(!containsTileAtPosition(x, y+1))
 		{
-			if(tile.getS().equals(playerTile.getN()))
+			if(!tile.getS().equals(EdgeType.GRASS))
 			{
-				freeEdges.add(new Point2D(x, y+1));
+				if(tile.getS().equals(playerTile.getN()))
+				{						
+					freeEdges.add(new Point2D(x, y+1));
+				}
 			}
 		}
 		
 		//West
 		if(!containsTileAtPosition(x-1, y))
 		{
-			if(tile.getW().equals(playerTile.getE()))
+			if(!tile.getW().equals(EdgeType.GRASS))
 			{
-				freeEdges.add(new Point2D(x-1, y));
+				if(tile.getW().equals(playerTile.getE()))
+				{
+					freeEdges.add(new Point2D(x-1, y));
+				}
 			}
 		}
 		
@@ -113,10 +125,12 @@ public class Board
 		return possibleLocations;
 	}
 	
-	public int getWidth()
+	public Dimension getDimension()
 	{
 		int minX = 0;
 		int maxX = 0;
+		int minY = 0;
+		int maxY = 0;
 		
 		for(Tile currentTile : tiles)
 		{
@@ -129,18 +143,7 @@ public class Board
 			{
 				maxX = (int)currentTile.getPosition().getX();
 			}
-		}	
-		
-		return Math.abs(minX) + maxX + 1;		
-	}
-	
-	public int getHeight()
-	{
-		int minY = 0;
-		int maxY = 0;
-		
-		for(Tile currentTile : tiles)
-		{
+			
 			if((int)currentTile.getPosition().getY() < minY)
 			{
 				minY = (int)currentTile.getPosition().getY();
@@ -150,9 +153,9 @@ public class Board
 			{
 				maxY = (int)currentTile.getPosition().getY();
 			}
-		}		
+		}	
 		
-		return Math.abs(minY) + maxY + 1;		
+		return new Dimension(minX, maxX, minY, maxY);		
 	}
 	
 	public void addTile(Tile tile)
