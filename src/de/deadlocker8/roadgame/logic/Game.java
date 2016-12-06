@@ -6,14 +6,12 @@ import javafx.geometry.Point2D;
 
 public class Game
 {
-	private Board board;
-	private PossibleTiles possibleTiles;
+	private Board board;	
 	private Tile currentTile;
 	
 	public Game()
 	{
-		board = new Board();
-		possibleTiles = new PossibleTiles();			
+		board = new Board();				
 	}
 	
 	public Board getBoard()
@@ -23,7 +21,7 @@ public class Game
 	
 	public Tile getNextTile()
 	{
-		return possibleTiles.getRandomTile();		
+		return board.getRandomTile();		
 	}
 	
 	public void setCurrentTile(Tile currentTile)
@@ -45,5 +43,5 @@ public class Game
 	{
 		tile.setPosition(position);
 		board.addTile(tile);
-	}
+	}	
 }

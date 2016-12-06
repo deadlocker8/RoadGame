@@ -14,7 +14,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
@@ -31,6 +31,7 @@ public class Controller
 	@FXML private AnchorPane anchorPaneGame;
 	@FXML private StackPane stackPaneCurrentTile;
 	@FXML private Button buttonRotate;
+	@FXML private ScrollPane scrollPane;
 
 	private Stage stage;
 	private Image icon = new Image("de/deadlocker8/roadgame/resources/icon.png");
@@ -55,11 +56,7 @@ public class Controller
 		stackPaneCurrentTile.setStyle("-fx-border-color: #333333; -fx-border-width: 2px");
 		
 		grid = new GridPane();
-		anchorPaneGame.getChildren().add(grid);
-		AnchorPane.setTopAnchor(grid, 0.0);
-		AnchorPane.setRightAnchor(grid, 0.0);
-		AnchorPane.setBottomAnchor(grid, 0.0);
-		AnchorPane.setLeftAnchor(grid, 0.0);
+		scrollPane.setContent(grid);
 		
 		game = new Game();
 		
@@ -100,8 +97,7 @@ public class Controller
 					}	
 				}
 				else
-				{		
-					System.out.println("öhm: " +( x - (int)center.getX() )+"    "+ (y - (int)center.getY() ));
+				{							
 					Tile tile = board.getTile(x - (int)center.getX(), y - (int)center.getY());
 					if(tile != null)
 					{					
@@ -127,12 +123,11 @@ public class Controller
 					}
 				}	
 			}
-		}		
+		}
 	}
 	
 	private void placeTile(int x, int y)
-	{
-		System.out.println(x + "  " + y);
+	{		
 		game.placeTile(game.getCurrentTile(), new Point2D(x, y));
 		nextTile();
 	}
@@ -216,15 +211,14 @@ public class Controller
 		game.setCurrentTile(game.getNextTile());
 		
 		stackPaneCurrentTile.getChildren().clear();
-		stackPaneCurrentTile.getChildren().add(createStackPaneForTile(game.getCurrentTile(), false, 0, 0));
-		System.out.println(game.getBoard());
+		stackPaneCurrentTile.getChildren().add(createStackPaneForTile(game.getCurrentTile(), false, 0, 0));	
 		
 		updateGrid(game.getBoard(), game.getPossibleLocations(game.getCurrentTile()));
 	}
 	
 	public void rotateRight()
 	{
-		game.getCurrentTile().rotateRight();
+		game.getCurrentTile().rotateRight();		
 		stackPaneCurrentTile.getChildren().clear();
 		stackPaneCurrentTile.getChildren().add(createStackPaneForTile(game.getCurrentTile(), false, 0, 0));	
 		

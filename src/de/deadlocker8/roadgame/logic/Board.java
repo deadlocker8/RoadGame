@@ -1,24 +1,23 @@
 package de.deadlocker8.roadgame.logic;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import javafx.geometry.Point2D;
 
 public class Board
 {
 	private ArrayList<Tile> tiles;
-	private PossibleTiles possibleTiles;
 
 	public Board()
 	{	
-		this.tiles = new ArrayList<>();	
-		this.possibleTiles = new PossibleTiles();
+		this.tiles = new ArrayList<>();			
 		initBoard();
 	}
 	
 	private void initBoard()
 	{		
-		Tile startTile = possibleTiles.getRandomTile();
+		Tile startTile = getRandomTile();
 		startTile.setPosition(new Point2D(0, 0));
 		
 		tiles.add(startTile);	
@@ -40,6 +39,23 @@ public class Board
 		}
 		
 		return null;
+	}
+	
+	public Tile getRandomTile()
+	{
+		Random random = new Random();
+		int index = random.nextInt(TileTypes.values().length);
+		TileTypes tileType = TileTypes.values()[index];	
+		Tile tile = new Tile(tileType.getN(), tileType.getE(), tileType.getS(), tileType.getW());
+		
+		//random rotation
+		int rotate = random.nextInt(3);
+		for(int i = 0; i < rotate; i++)
+		{
+			tile.rotateRight();
+		}
+	
+		return tile;
 	}
 	
 	public boolean containsTileAtPosition(int x, int y)
@@ -67,7 +83,7 @@ public class Board
 		{	
 			if(!tile.getN().equals(EdgeType.GRASS))
 			{
-				if(tile.getN().equals(playerTile.getS()))
+				if(isCrossCheckValid(playerTile, x, y-1))
 				{
 					freeEdges.add(new Point2D(x, y-1));
 				}
@@ -79,7 +95,7 @@ public class Board
 		{
 			if(!tile.getE().equals(EdgeType.GRASS))
 			{
-				if(tile.getE().equals(playerTile.getW()))
+				if(isCrossCheckValid(playerTile, x+1, y))
 				{
 					freeEdges.add(new Point2D(x+1, y));
 				}
@@ -91,7 +107,7 @@ public class Board
 		{
 			if(!tile.getS().equals(EdgeType.GRASS))
 			{
-				if(tile.getS().equals(playerTile.getN()))
+				if(isCrossCheckValid(playerTile, x, y+1))
 				{						
 					freeEdges.add(new Point2D(x, y+1));
 				}
@@ -103,7 +119,7 @@ public class Board
 		{
 			if(!tile.getW().equals(EdgeType.GRASS))
 			{
-				if(tile.getW().equals(playerTile.getE()))
+				if(isCrossCheckValid(playerTile, x-1, y))
 				{
 					freeEdges.add(new Point2D(x-1, y));
 				}
@@ -111,6 +127,47 @@ public class Board
 		}
 		
 		return freeEdges;
+	}
+	
+	private boolean isCrossCheckValid(Tile tile, int x, int y)
+	{
+		//North
+		if(containsTileAtPosition(x, y-1))
+		{			
+			if(!tile.getN().equals(getTile(x, y-1).getS()))
+			{
+				return false;
+			}			
+		}
+		
+		//East
+		if(containsTileAtPosition(x+1, y))
+		{
+			if(!tile.getE().equals(getTile(x+1, y).getW()))
+			{
+				return false;
+			}	
+		}
+				
+		//South
+		if(containsTileAtPosition(x, y+1))
+		{
+			if(!tile.getS().equals(getTile(x, y+1).getN()))
+			{
+				return false;
+			}	
+		}
+		
+		//West
+		if(containsTileAtPosition(x-1, y))
+		{
+			if(!tile.getW().equals(getTile(x-1, y).getE()))
+			{
+				return false;
+			}	
+		}
+		
+		return true;
 	}
 	
 	public ArrayList<Point2D> getPossibleLocations(Tile tile)
@@ -149,7 +206,7 @@ public class Board
 				minY = (int)currentTile.getPosition().getY();
 			}
 			
-			if((int)currentTile.getPosition().getX() > maxY)
+			if((int)currentTile.getPosition().getY() > maxY)
 			{
 				maxY = (int)currentTile.getPosition().getY();
 			}

@@ -28,7 +28,7 @@ public class Main extends Application
 
 			((Controller)loader.getController()).init(stage);
 
-			stage.setResizable(false);
+			stage.setResizable(true);
 			stage.getIcons().add(new Image("de/deadlocker8/roadgame/resources/icon.png"));
 			stage.setTitle("RoadGame");
 			stage.setScene(scene);
