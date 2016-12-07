@@ -226,6 +226,8 @@ public class Controller
 				}
 				
 				return iv;
+			case CHURCH:
+				return new ImageView(textures.getImageCenterChurch());
 			default:
 				return new ImageView(textures.getImageEmpty());
 		}
