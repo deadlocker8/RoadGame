@@ -8,23 +8,26 @@ public class Tile
 	private EdgeType E;
 	private EdgeType S;
 	private EdgeType W;	
+	private CenterType C;
 	private Point2D position;
 	
-	public Tile(EdgeType N, EdgeType E, EdgeType S, EdgeType W, int x, int y)
+	public Tile(EdgeType N, EdgeType E, EdgeType S, EdgeType W, CenterType C, int x, int y)
 	{		
 		this.N = N;
 		this.E = E;
 		this.S = S;
 		this.W = W;
+		this.C = C;
 		this.position = new Point2D(x, y);
 	}
 	
-	public Tile(EdgeType N, EdgeType E, EdgeType S, EdgeType W)
+	public Tile(EdgeType N, EdgeType E, EdgeType S, EdgeType W, CenterType C)
 	{		
 		this.N = N;
 		this.E = E;
 		this.S = S;
 		this.W = W;
+		this.C = C;
 		this.position = null;
 	}	
 
@@ -46,8 +49,13 @@ public class Tile
 	public EdgeType getW()
 	{
 		return W;
-	}		
+	}	
 	
+	public CenterType getC()
+	{
+		return C;
+	}
+
 	public Point2D getPosition()
 	{
 		return position;

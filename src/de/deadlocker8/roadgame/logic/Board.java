@@ -46,7 +46,7 @@ public class Board
 		Random random = new Random();
 		int index = random.nextInt(TileTypes.values().length);
 		TileTypes tileType = TileTypes.values()[index];	
-		Tile tile = new Tile(tileType.getN(), tileType.getE(), tileType.getS(), tileType.getW());
+		Tile tile = new Tile(tileType.getN(), tileType.getE(), tileType.getS(), tileType.getW(), tileType.getC());
 		
 		//random rotation
 		int rotate = random.nextInt(3);
