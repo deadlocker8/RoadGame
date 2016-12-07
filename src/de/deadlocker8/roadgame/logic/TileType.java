@@ -43,11 +43,14 @@ public enum TileType
 	
 	//special castles with roads
 	CASTLE_TRIANGLE_ROAD_CURVE(EdgeType.CASTLE, EdgeType.CASTLE, EdgeType.ROAD, EdgeType.ROAD, CenterType.CASTLE_TRIANGLE),
-	CASTLE_TRIANGLE_ROAD_RIGHT(EdgeType.CASTLE, EdgeType.CASTLE, EdgeType.ROAD, EdgeType.GRASS, CenterType.CASTLE_TRIANGLE),
-	CASTLE_TRIANGLE_ROAD_LEFT(EdgeType.CASTLE, EdgeType.CASTLE, EdgeType.GRASS, EdgeType.ROAD, CenterType.CASTLE_TRIANGLE),
+	CASTLE_TRIANGLE_ROAD_RIGHT_END_IN_CASTLE(EdgeType.CASTLE, EdgeType.CASTLE, EdgeType.ROAD, EdgeType.GRASS, CenterType.CASTLE_TRIANGLE),
+	CASTLE_TRIANGLE_ROAD_LEFT_END_IN_CASTLE(EdgeType.CASTLE, EdgeType.CASTLE, EdgeType.GRASS, EdgeType.ROAD, CenterType.CASTLE_TRIANGLE),
 	CASTLE_TUBE_ROAD_ONE_SIDE(EdgeType.CASTLE, EdgeType.ROAD, EdgeType.CASTLE, EdgeType.GRASS, CenterType.CASTLE),
 	CASTLE_TUBE_ROAD_TWO_SIDE(EdgeType.CASTLE, EdgeType.ROAD, EdgeType.CASTLE, EdgeType.ROAD, CenterType.CASTLE),
-	CASTLE_U_ROAD_END(EdgeType.CASTLE, EdgeType.CASTLE, EdgeType.CASTLE, EdgeType.ROAD, CenterType.CASTLE);
+	CASTLE_U_ROAD_END(EdgeType.CASTLE, EdgeType.CASTLE, EdgeType.CASTLE, EdgeType.ROAD, CenterType.CASTLE),
+	
+	//special tiles
+	CHURCH(EdgeType.GRASS, EdgeType.GRASS,EdgeType.GRASS ,EdgeType.GRASS, CenterType.CHURCH);
 	
 	
 	private EdgeType N;
