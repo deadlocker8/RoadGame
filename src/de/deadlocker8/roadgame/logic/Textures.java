@@ -12,6 +12,7 @@ public class Textures
 	private Image imageCenterCastle = new Image("de/deadlocker8/roadgame/resources/center_castle.png");
 	private Image imageCenterCastleTriangle = new Image("de/deadlocker8/roadgame/resources/center_castle_triangle.png");
 	private Image imageCenterChurch = new Image("de/deadlocker8/roadgame/resources/center_church.png");
+	private Image imageCenterRoad = new Image("de/deadlocker8/roadgame/resources/center_road.png");
 	
 	public Textures()
 	{
@@ -56,5 +57,10 @@ public class Textures
 	public Image getImageCenterChurch()
 	{
 		return imageCenterChurch;
-	}	
+	}
+
+	public Image getImageCenterRoad()
+	{
+		return imageCenterRoad;
+	}		
 }

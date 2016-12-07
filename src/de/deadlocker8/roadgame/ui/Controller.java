@@ -1,5 +1,6 @@
 package de.deadlocker8.roadgame.ui;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -11,7 +12,10 @@ import de.deadlocker8.roadgame.logic.Textures;
 import de.deadlocker8.roadgame.logic.Tile;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -23,7 +27,10 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import logger.LogLevel;
+import logger.Logger;
 
 public class Controller
 {
@@ -32,6 +39,7 @@ public class Controller
 	@FXML private Button buttonRotate;
 	@FXML private ScrollPane scrollPane;
 
+	private Stage stage;
 	private Image icon = new Image("de/deadlocker8/roadgame/resources/icon.png");
 	private final ResourceBundle bundle = ResourceBundle.getBundle("de/deadlocker8/roadgame/main/", Locale.GERMANY);
 	private GridPane grid;
@@ -40,12 +48,14 @@ public class Controller
 
 	public void init(Stage stage)
 	{
+		this.stage = stage;
 		textures = new Textures();
 
 		anchorPaneGame.setStyle("-fx-border-color: #333333; -fx-border-width: 2px");
 		stackPaneCurrentTile.setStyle("-fx-border-color: #333333; -fx-border-width: 2px");
 
 		grid = new GridPane();
+		grid.setFocusTraversable(false);
 		scrollPane.setContent(grid);
 
 		game = new Game();
@@ -122,7 +132,7 @@ public class Controller
 		nextTile();
 	}
 
-	private StackPane createStackPaneForTile(Tile tile, boolean possible, int x, int y)
+	public StackPane createStackPaneForTile(Tile tile, boolean possible, int x, int y)
 	{
 		StackPane stack = new StackPane();
 
@@ -177,7 +187,7 @@ public class Controller
 		return stack;
 	}
 
-	private ImageView getImageForEdge(EdgeType edgeType)
+	public ImageView getImageForEdge(EdgeType edgeType)
 	{
 		switch(edgeType)
 		{
@@ -192,7 +202,7 @@ public class Controller
 		}
 	}
 	
-	private ImageView getImageForCenter(Tile tile)
+	public ImageView getImageForCenter(Tile tile)
 	{		
 		switch(tile.getC())
 		{
@@ -223,11 +233,28 @@ public class Controller
 						//South and West
 						iv.setRotate(180);
 					}
-				}
-				
+				}				
 				return iv;
 			case CHURCH:
 				return new ImageView(textures.getImageCenterChurch());
+			case ROAD:
+				ImageView ivRoad = new ImageView(textures.getImageCenterRoad());				
+				
+				if(tile.getE().equals(EdgeType.CASTLE))
+				{				
+					ivRoad.setRotate(90);
+				}
+				
+				if(tile.getS().equals(EdgeType.CASTLE))
+				{					
+					ivRoad.setRotate(180);
+				}
+				
+				if(tile.getW().equals(EdgeType.CASTLE))
+				{					
+					ivRoad.setRotate(270);
+				}
+				return ivRoad;
 			default:
 				return new ImageView(textures.getImageEmpty());
 		}
@@ -265,6 +292,35 @@ public class Controller
 		stackPaneCurrentTile.getChildren().add(createStackPaneForTile(game.getCurrentTile(), false, 0, 0));
 
 		updateGrid(game.getBoard(), game.getPossibleLocations(game.getCurrentTile()));
+	}
+	
+	public void reset()
+	{
+		init(stage);
+	}
+	
+	public void showPossibleTiles()
+	{
+		try
+		{
+			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/de/deadlocker8/roadgame/ui/PossibleTilesGUI.fxml"));
+			Parent root = (Parent)fxmlLoader.load();
+			Stage newStage = new Stage();
+			newStage.initOwner(stage);
+			newStage.initModality(Modality.APPLICATION_MODAL);
+			newStage.setTitle("Possible Tiles");
+			newStage.setScene(new Scene(root));
+			newStage.getIcons().add(icon);
+			newStage.setResizable(false);
+			PossibleTilesController newController = fxmlLoader.getController();
+			newController.init(newStage, this);
+			newStage.show();
+
+		}
+		catch(IOException io)
+		{
+			Logger.log(LogLevel.ERROR, Logger.exceptionToString(io));
+		}
 	}
 
 	public void about()

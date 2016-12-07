@@ -1,6 +1,6 @@
 package de.deadlocker8.roadgame.logic;
 
-public enum TileTypes
+public enum TileType
 {
 	//only roads
 	ROAD_END(EdgeType.ROAD, EdgeType.GRASS, EdgeType.GRASS, EdgeType.GRASS, CenterType.EMPTY),
@@ -33,7 +33,10 @@ public enum TileTypes
 	CASTLE_SINGLE_ROAD_STRAIGHT(EdgeType.CASTLE, EdgeType.ROAD, EdgeType.GRASS, EdgeType.ROAD,CenterType.EMPTY),
 	CASTLE_SINGLE_ROAD_CURVE_RIGHT(EdgeType.CASTLE, EdgeType.ROAD, EdgeType.ROAD, EdgeType.GRASS,CenterType.EMPTY),
 	CASTLE_SINGLE_ROAD_CURVE_LEFT(EdgeType.CASTLE, EdgeType.GRASS, EdgeType.ROAD, EdgeType.ROAD,CenterType.EMPTY),
-	CASTLE_SINGLE_ROAD_T_JUNCTION(EdgeType.CASTLE, EdgeType.ROAD, EdgeType.ROAD, EdgeType.ROAD,CenterType.EMPTY),	
+	CASTLE_SINGLE_ROAD_T_JUNCTION(EdgeType.CASTLE, EdgeType.ROAD, EdgeType.ROAD, EdgeType.ROAD,CenterType.EMPTY),
+	CASTLE_SINGLE_ROAD_END_IN_CASTLE(EdgeType.CASTLE, EdgeType.GRASS, EdgeType.ROAD, EdgeType.GRASS, CenterType.ROAD),
+	CASTLE_SINGLE_ROAD_CURVE_RIGHT_END_IN_CASTLE(EdgeType.CASTLE, EdgeType.ROAD, EdgeType.GRASS, EdgeType.GRASS,CenterType.ROAD),
+	CASTLE_SINGLE_ROAD_CURVE_LEFT_END_IN_CASTLE(EdgeType.CASTLE, EdgeType.GRASS, EdgeType.GRASS, EdgeType.ROAD,CenterType.ROAD),
 	CASTLE_TWO_SINGLE_OPPOSITE_ROAD_STRAIGHT(EdgeType.CASTLE, EdgeType.ROAD, EdgeType.CASTLE, EdgeType.ROAD, CenterType.EMPTY),	
 	CASTLE_TWO_SINGLE_NEIGHBOR_ROAD_CURVE(EdgeType.CASTLE, EdgeType.CASTLE, EdgeType.ROAD, EdgeType.ROAD, CenterType.EMPTY),
 	CASTLE_THREE_SINGLE_ROAD_END(EdgeType.CASTLE, EdgeType.CASTLE, EdgeType.CASTLE, EdgeType.ROAD, CenterType.EMPTY),
@@ -53,7 +56,7 @@ public enum TileTypes
 	private EdgeType W;
 	private CenterType C;
 		
-	private TileTypes(EdgeType n, EdgeType e, EdgeType s, EdgeType w, CenterType c)
+	private TileType(EdgeType n, EdgeType e, EdgeType s, EdgeType w, CenterType c)
 	{
 		N = n;
 		E = e;

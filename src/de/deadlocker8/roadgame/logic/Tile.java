@@ -30,6 +30,16 @@ public class Tile
 		this.C = C;
 		this.position = null;
 	}	
+	
+	public Tile(TileType type)
+	{		
+		this.N = type.getN();
+		this.E = type.getE();
+		this.S = type.getS();
+		this.W = type.getW();
+		this.C = type.getC();
+		this.position = null;
+	}	
 
 	public EdgeType getN()
 	{
