@@ -25,8 +25,9 @@ public enum TileTypes
 	
 	//special castles
 	CASTLE_TRIANGLE(EdgeType.CASTLE, EdgeType.CASTLE, EdgeType.GRASS, EdgeType.GRASS, CenterType.CASTLE_TRIANGLE),
-	CASTLE_TUBE(EdgeType.CASTLE, EdgeType.GRASS, EdgeType.CASTLE, EdgeType.GRASS, CenterType.CASTLE),
+	CASTLE_TUBE(EdgeType.CASTLE, EdgeType.GRASS, EdgeType.CASTLE, EdgeType.GRASS, CenterType.CASTLE),	
 	CASTLE_FULL(EdgeType.CASTLE, EdgeType.CASTLE, EdgeType.CASTLE, EdgeType.CASTLE, CenterType.CASTLE),
+	CASTLE_U(EdgeType.CASTLE, EdgeType.CASTLE, EdgeType.CASTLE, EdgeType.GRASS, CenterType.CASTLE),	
 	
 	//single castles with roads
 	CASTLE_SINGLE_ROAD_STRAIGHT(EdgeType.CASTLE, EdgeType.ROAD, EdgeType.GRASS, EdgeType.ROAD,CenterType.EMPTY),
@@ -42,7 +43,8 @@ public enum TileTypes
 	CASTLE_TRIANGLE_ROAD_RIGHT(EdgeType.CASTLE, EdgeType.CASTLE, EdgeType.ROAD, EdgeType.GRASS, CenterType.CASTLE_TRIANGLE),
 	CASTLE_TRIANGLE_ROAD_LEFT(EdgeType.CASTLE, EdgeType.CASTLE, EdgeType.GRASS, EdgeType.ROAD, CenterType.CASTLE_TRIANGLE),
 	CASTLE_TUBE_ROAD_ONE_SIDE(EdgeType.CASTLE, EdgeType.ROAD, EdgeType.CASTLE, EdgeType.GRASS, CenterType.CASTLE),
-	CASTLE_TUBE_ROAD_TWO_SIDE(EdgeType.CASTLE, EdgeType.ROAD, EdgeType.CASTLE, EdgeType.ROAD, CenterType.CASTLE);
+	CASTLE_TUBE_ROAD_TWO_SIDE(EdgeType.CASTLE, EdgeType.ROAD, EdgeType.CASTLE, EdgeType.ROAD, CenterType.CASTLE),
+	CASTLE_U_ROAD_END(EdgeType.CASTLE, EdgeType.CASTLE, EdgeType.CASTLE, EdgeType.ROAD, CenterType.CASTLE);
 	
 	
 	private EdgeType N;
