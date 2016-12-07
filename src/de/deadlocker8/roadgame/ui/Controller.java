@@ -21,7 +21,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
@@ -39,14 +38,14 @@ public class Controller
 	@FXML private AnchorPane anchorPaneGame;
 	@FXML private StackPane stackPaneCurrentTile;
 	@FXML private Button buttonRotate;
-	@FXML private ScrollPane scrollPane;
-
+	
 	private Stage stage;
 	private Image icon = new Image("de/deadlocker8/roadgame/resources/icon.png");
 	private final ResourceBundle bundle = ResourceBundle.getBundle("de/deadlocker8/roadgame/main/", Locale.GERMANY);
 	private GridPane grid;
 	private Game game;
 	private Textures textures;
+	private ZoomableScrollPane scrollPane;
 	private StackPane stackPanePlaceHolder;
 	
 	public void init(Stage stage)
@@ -56,10 +55,20 @@ public class Controller
 
 		anchorPaneGame.setStyle("-fx-border-color: #333333; -fx-border-width: 2px");
 		stackPaneCurrentTile.setStyle("-fx-border-color: #333333; -fx-border-width: 2px");
-
+	
 		grid = new GridPane();
-		grid.setFocusTraversable(false);		
-		scrollPane.setContent(grid);
+		grid.setFocusTraversable(false);	
+		
+		scrollPane = new ZoomableScrollPane(grid);		
+		scrollPane.setPannable(true);		
+		scrollPane.setFitToHeight(true);
+		scrollPane.setFitToWidth(true);		
+		anchorPaneGame.getChildren().add(scrollPane);
+		AnchorPane.setTopAnchor(scrollPane, 0.0);
+		AnchorPane.setRightAnchor(scrollPane, 0.0);
+		AnchorPane.setBottomAnchor(scrollPane, 0.0);
+		AnchorPane.setLeftAnchor(scrollPane, 0.0);		
+		
 		anchorPaneGame.setOnMouseClicked(new EventHandler<MouseEvent>()
 		{
 			@Override
