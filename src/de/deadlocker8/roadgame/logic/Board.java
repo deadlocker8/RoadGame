@@ -81,49 +81,37 @@ public class Board
 		//North
 		if(!containsTileAtPosition(x, y-1))
 		{	
-			if(!tile.getN().equals(EdgeType.GRASS))
+			if(isCrossCheckValid(playerTile, x, y-1))
 			{
-				if(isCrossCheckValid(playerTile, x, y-1))
-				{
-					freeEdges.add(new Point2D(x, y-1));
-				}
-			}
+				freeEdges.add(new Point2D(x, y-1));
+			}			
 		}
 		
 		//East
 		if(!containsTileAtPosition(x+1, y))
 		{
-			if(!tile.getE().equals(EdgeType.GRASS))
+			if(isCrossCheckValid(playerTile, x+1, y))
 			{
-				if(isCrossCheckValid(playerTile, x+1, y))
-				{
-					freeEdges.add(new Point2D(x+1, y));
-				}
-			}
+				freeEdges.add(new Point2D(x+1, y));
+			}		
 		}
 				
 		//South
 		if(!containsTileAtPosition(x, y+1))
-		{
-			if(!tile.getS().equals(EdgeType.GRASS))
-			{
-				if(isCrossCheckValid(playerTile, x, y+1))
-				{						
-					freeEdges.add(new Point2D(x, y+1));
-				}
-			}
+		{	
+			if(isCrossCheckValid(playerTile, x, y+1))
+			{						
+				freeEdges.add(new Point2D(x, y+1));
+			}			
 		}
 		
 		//West
 		if(!containsTileAtPosition(x-1, y))
 		{
-			if(!tile.getW().equals(EdgeType.GRASS))
+			if(isCrossCheckValid(playerTile, x-1, y))
 			{
-				if(isCrossCheckValid(playerTile, x-1, y))
-				{
-					freeEdges.add(new Point2D(x-1, y));
-				}
-			}
+				freeEdges.add(new Point2D(x-1, y));
+			}		
 		}
 		
 		return freeEdges;
