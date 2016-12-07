@@ -55,8 +55,19 @@ public class Controller
 		stackPaneCurrentTile.setStyle("-fx-border-color: #333333; -fx-border-width: 2px");
 
 		grid = new GridPane();
-		grid.setFocusTraversable(false);
+		grid.setFocusTraversable(false);		
 		scrollPane.setContent(grid);
+		anchorPaneGame.setOnMouseClicked(new EventHandler<MouseEvent>()
+		{
+			@Override
+			public void handle(MouseEvent event)
+			{
+				if(event.getButton().equals(MouseButton.SECONDARY))
+				{
+					rotateRight();
+				}				
+			}
+		});
 
 		game = new Game();
 
