@@ -10,6 +10,7 @@ import de.deadlocker8.roadgame.logic.EdgeType;
 import de.deadlocker8.roadgame.logic.Game;
 import de.deadlocker8.roadgame.logic.Textures;
 import de.deadlocker8.roadgame.logic.Tile;
+import de.deadlocker8.roadgame.tilepacks.TilePack;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -19,6 +20,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -45,7 +47,8 @@ public class Controller
 	private GridPane grid;
 	private Game game;
 	private Textures textures;
-
+	private StackPane stackPanePlaceHolder;
+	
 	public void init(Stage stage)
 	{
 		this.stage = stage;
@@ -68,12 +71,17 @@ public class Controller
 				}				
 			}
 		});
-
-		game = new Game();
-
-		updateGrid(game.getBoard(), null);
-
-		nextTile();
+		
+		buttonRotate.setDisable(true);
+		Label labelPlaceHolder = new Label("Please select Tilepack first.");
+		labelPlaceHolder.setStyle("-fx-font-weight: bold; -fx-font-size: 16;");
+		stackPanePlaceHolder = new StackPane();
+		stackPanePlaceHolder.getChildren().add(labelPlaceHolder);
+		anchorPaneGame.getChildren().add(stackPanePlaceHolder);
+		AnchorPane.setTopAnchor(stackPanePlaceHolder, 0.0);
+		AnchorPane.setRightAnchor(stackPanePlaceHolder, 0.0);
+		AnchorPane.setBottomAnchor(stackPanePlaceHolder, 0.0);
+		AnchorPane.setLeftAnchor(stackPanePlaceHolder, 0.0);
 	}
 
 	private void updateGrid(Board board, ArrayList<Point2D> possibleLocations)
@@ -288,7 +296,17 @@ public class Controller
 
 	private void nextTile()
 	{
-		game.setCurrentTile(game.getNextTile());
+		Tile nextTile = game.getNextTile();
+		if(nextTile == null)		
+		{			
+			game.setCurrentTile(null);
+			stackPaneCurrentTile.getChildren().clear();
+			//TODO
+			updateGrid(game.getBoard(), null);
+			return;
+		}
+			
+		game.setCurrentTile(nextTile);
 
 		stackPaneCurrentTile.getChildren().clear();
 		stackPaneCurrentTile.getChildren().add(createStackPaneForTile(game.getCurrentTile(), false, 0, 0));
@@ -298,11 +316,14 @@ public class Controller
 
 	public void rotateRight()
 	{
-		game.getCurrentTile().rotateRight();
-		stackPaneCurrentTile.getChildren().clear();
-		stackPaneCurrentTile.getChildren().add(createStackPaneForTile(game.getCurrentTile(), false, 0, 0));
-
-		updateGrid(game.getBoard(), game.getPossibleLocations(game.getCurrentTile()));
+		if(game != null && game.getCurrentTile() != null)
+		{
+			game.getCurrentTile().rotateRight();
+			stackPaneCurrentTile.getChildren().clear();
+			stackPaneCurrentTile.getChildren().add(createStackPaneForTile(game.getCurrentTile(), false, 0, 0));
+	
+			updateGrid(game.getBoard(), game.getPossibleLocations(game.getCurrentTile()));
+		}
 	}
 	
 	public void reset()
@@ -310,21 +331,21 @@ public class Controller
 		init(stage);
 	}
 	
-	public void showPossibleTiles()
+	public void selectTilePack()
 	{
 		try
 		{
-			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/de/deadlocker8/roadgame/ui/PossibleTilesGUI.fxml"));
+			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/de/deadlocker8/roadgame/ui/SelectTilePackGUI.fxml"));
 			Parent root = (Parent)fxmlLoader.load();
 			Stage newStage = new Stage();
 			newStage.initOwner(stage);
 			newStage.initModality(Modality.APPLICATION_MODAL);
-			newStage.setTitle("Possible Tiles");
+			newStage.setTitle("Select Tilepack");
 			newStage.setScene(new Scene(root));
 			newStage.getIcons().add(icon);
 			newStage.setResizable(false);
-			PossibleTilesController newController = fxmlLoader.getController();
-			newController.init(newStage, this);
+			SelectTilePackController newController = fxmlLoader.getController();
+			newController.init(newStage, icon, this);
 			newStage.show();
 
 		}
@@ -332,6 +353,21 @@ public class Controller
 		{
 			Logger.log(LogLevel.ERROR, Logger.exceptionToString(io));
 		}
+	}
+	
+	public void setTilePack(TilePack tilePack)
+	{
+		buttonRotate.setDisable(false);
+		if(anchorPaneGame.getChildren().contains(stackPanePlaceHolder))
+		{
+			anchorPaneGame.getChildren().remove(stackPanePlaceHolder);
+		}
+		
+		game = new Game(tilePack);
+		
+		updateGrid(game.getBoard(), null);
+
+		nextTile();
 	}
 
 	public void about()

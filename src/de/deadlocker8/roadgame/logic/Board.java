@@ -1,26 +1,32 @@
 package de.deadlocker8.roadgame.logic;
 
 import java.util.ArrayList;
-import java.util.Random;
 
+import de.deadlocker8.roadgame.tilepacks.TilePack;
 import javafx.geometry.Point2D;
 
 public class Board
 {
+	private TilePack tilePack;
 	private ArrayList<Tile> tiles;
 
-	public Board()
+	public Board(TilePack tilePack)
 	{	
+		this.tilePack = tilePack;
 		this.tiles = new ArrayList<>();			
 		initBoard();
 	}
 	
 	private void initBoard()
 	{		
-		Tile startTile = getRandomTile();
-		startTile.setPosition(new Point2D(0, 0));
-		
-		tiles.add(startTile);	
+		TileType tileType = getRandomTile();
+		if(tileType != null)
+		{	
+			Tile startTile = new Tile(tileType);
+			startTile.setPosition(new Point2D(0, 0));
+			
+			tiles.add(startTile);	
+		}	
 	}
 
 	public ArrayList<Tile> getTiles()
@@ -41,21 +47,9 @@ public class Board
 		return null;
 	}
 	
-	public Tile getRandomTile()
+	public TileType getRandomTile()
 	{
-		Random random = new Random();
-		int index = random.nextInt(TileType.values().length);
-		TileType tileType = TileType.values()[index];	
-		Tile tile = new Tile(tileType.getN(), tileType.getE(), tileType.getS(), tileType.getW(), tileType.getC());
-		
-		//random rotation
-		int rotate = random.nextInt(3);
-		for(int i = 0; i < rotate; i++)
-		{
-			tile.rotateRight();
-		}
-	
-		return tile;
+		return tilePack.getRandomTile();
 	}
 	
 	public boolean containsTileAtPosition(int x, int y)

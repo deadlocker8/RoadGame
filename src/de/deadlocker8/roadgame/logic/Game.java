@@ -2,16 +2,17 @@ package de.deadlocker8.roadgame.logic;
 
 import java.util.ArrayList;
 
+import de.deadlocker8.roadgame.tilepacks.TilePack;
 import javafx.geometry.Point2D;
 
 public class Game
-{
+{	
 	private Board board;	
 	private Tile currentTile;
 	
-	public Game()
+	public Game(TilePack tilePack)
 	{
-		board = new Board();				
+		board = new Board(tilePack);				
 	}
 	
 	public Board getBoard()
@@ -21,7 +22,13 @@ public class Game
 	
 	public Tile getNextTile()
 	{
-		return board.getRandomTile();		
+		TileType type = board.getRandomTile();
+		if(type == null)
+		{
+			return null;
+		}
+		
+		return new Tile(type);	
 	}
 	
 	public void setCurrentTile(Tile currentTile)

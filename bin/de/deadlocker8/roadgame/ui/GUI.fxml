@@ -39,7 +39,7 @@
           <Menu mnemonicParsing="false" text="Menu">
             <items>
               <MenuItem mnemonicParsing="false" onAction="#reset" text="Reset" />
-                  <MenuItem mnemonicParsing="false" onAction="#showPossibleTiles" text="Show possible Tiles" />
+                  <MenuItem mnemonicParsing="false" onAction="#selectTilePack" text="Select Tilepack" />
                   <MenuItem mnemonicParsing="false" onAction="#about" text="About" />
             </items>
           </Menu>

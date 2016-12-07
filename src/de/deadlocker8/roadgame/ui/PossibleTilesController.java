@@ -2,9 +2,13 @@ package de.deadlocker8.roadgame.ui;
 
 import de.deadlocker8.roadgame.logic.Tile;
 import de.deadlocker8.roadgame.logic.TileType;
+import de.deadlocker8.roadgame.tilepacks.TilePack;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -16,19 +20,29 @@ public class PossibleTilesController
 
 	private Stage stage;	
 
-	public void init(Stage stage, Controller controller)
+	public void init(Stage stage, Controller controller, TilePack tilePack)
 	{
 		this.stage = stage;
 		
 		vbox.setSpacing(10.0);
-		vbox.setAlignment(Pos.CENTER);
+		vbox.setAlignment(Pos.TOP_CENTER);
 		
-		for(TileType currentType : TileType.values())
+		for(TileType key : tilePack.getTiles().keySet())
 		{
-			Tile tile = new Tile(currentType);
+			HBox hbox = new HBox();
+			hbox.setAlignment(Pos.CENTER);
+			
+			Tile tile = new Tile(key);
 			StackPane currentStack = controller.createStackPaneForTile(tile, false, 0, 0);
 			currentStack.setMaxWidth(100.0);
-			vbox.getChildren().add(currentStack);
+			
+			Label labelTimes = new Label("x" + tilePack.getTiles().get(key));
+			labelTimes.setStyle("-fx-font-weight: bold; -fx-font-size: 20;");
+			
+			hbox.getChildren().add(currentStack);			
+			hbox.getChildren().add(labelTimes);
+			HBox.setMargin(labelTimes, new Insets(0, 0, 0, 25));
+			vbox.getChildren().add(hbox);
 		}
 	}
 	
