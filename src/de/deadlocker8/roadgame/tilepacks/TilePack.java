@@ -8,12 +8,12 @@ import java.util.Random;
 import de.deadlocker8.roadgame.logic.Tile;
 import de.deadlocker8.roadgame.logic.TileType;
 
-public abstract class TilePack
+public class TilePack
 {	
 	protected String name;
 	protected HashMap<TileType, Integer> tiles;	
 	
-	public TilePack(String name)
+	protected TilePack(String name)
 	{
 		this.name = name;
 	}		

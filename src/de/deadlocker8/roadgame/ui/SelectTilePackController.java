@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import de.deadlocker8.roadgame.tilepacks.TilePack;
+import de.deadlocker8.roadgame.tilepacks.TilePackAllPossibleTiles;
 import de.deadlocker8.roadgame.tilepacks.TilePackDefault;
 import de.deadlocker8.roadgame.tilepacks.TilePackTest;
 import javafx.event.ActionEvent;
@@ -47,7 +48,8 @@ public class SelectTilePackController
 		
 		ArrayList<TilePack> possibleTilePacks = new ArrayList<>();
 		possibleTilePacks.add(new TilePackDefault());
-		possibleTilePacks.add(new TilePackTest());		
+		possibleTilePacks.add(new TilePackTest());	
+		possibleTilePacks.add(new TilePackAllPossibleTiles());	
 		
 		for(TilePack currentPack : possibleTilePacks)
 		{			
