@@ -28,6 +28,11 @@ public class Board
 			tiles.add(startTile);	
 		}	
 	}
+	
+	public TilePack getTilePack()
+	{
+		return tilePack;
+	}
 
 	public ArrayList<Tile> getTiles()
 	{

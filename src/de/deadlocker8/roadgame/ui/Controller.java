@@ -38,6 +38,7 @@ public class Controller
 	@FXML private AnchorPane anchorPaneGame;
 	@FXML private StackPane stackPaneCurrentTile;
 	@FXML private Button buttonRotate;
+	@FXML private Label labelTilesRemaining;
 	
 	private Stage stage;
 	private Image icon = new Image("de/deadlocker8/roadgame/resources/icon.png");
@@ -55,6 +56,8 @@ public class Controller
 
 		anchorPaneGame.setStyle("-fx-border-color: #333333; -fx-border-width: 2px");
 		stackPaneCurrentTile.setStyle("-fx-border-color: #333333; -fx-border-width: 2px");
+		
+		labelTilesRemaining.setText("0");
 	
 		grid = new GridPane();
 		grid.setFocusTraversable(false);	
@@ -309,8 +312,7 @@ public class Controller
 		if(nextTile == null)		
 		{			
 			game.setCurrentTile(null);
-			stackPaneCurrentTile.getChildren().clear();
-			//TODO
+			stackPaneCurrentTile.getChildren().clear();			
 			updateGrid(game.getBoard(), null);
 			return;
 		}
@@ -319,8 +321,10 @@ public class Controller
 
 		stackPaneCurrentTile.getChildren().clear();
 		stackPaneCurrentTile.getChildren().add(createStackPaneForTile(game.getCurrentTile(), false, 0, 0));
+		
+		labelTilesRemaining.setText(String.valueOf(game.getBoard().getTilePack().getNumberOfTiles()));
 
-		updateGrid(game.getBoard(), game.getPossibleLocations(game.getCurrentTile()));
+		updateGrid(game.getBoard(), game.getPossibleLocations(game.getCurrentTile()));			
 	}
 
 	public void rotateRight()

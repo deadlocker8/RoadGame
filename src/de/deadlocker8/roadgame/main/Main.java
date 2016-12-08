@@ -24,11 +24,13 @@ public class Main extends Application
 			FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("de/deadlocker8/roadgame/ui/GUI.fxml"));
 			Parent root = (Parent)loader.load();
 
-			Scene scene = new Scene(root, 800, 600);		
+			Scene scene = new Scene(root, 800, 600);			
 
 			((Controller)loader.getController()).init(stage);
 
 			stage.setResizable(true);
+			stage.setMinWidth(800);
+			stage.setMinHeight(600);
 			stage.getIcons().add(new Image("de/deadlocker8/roadgame/resources/icon.png"));
 			stage.setTitle("RoadGame");
 			stage.setScene(scene);
