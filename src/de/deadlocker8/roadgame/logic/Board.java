@@ -167,6 +167,39 @@ public class Board
 		}		
 		
 		return possibleLocations;
+	}	
+
+	public boolean tileCanBePlaced(Tile tile)
+	{
+		if(getPossibleLocations(tile).size() == 0)
+		{
+			return false;
+		}
+		
+		tile.rotateRight();
+		if(getPossibleLocations(tile).size() == 0)
+		{
+			tile.rotateLeft();
+			return false;
+		}
+		
+		tile.rotateRight();
+		if(getPossibleLocations(tile).size() == 0)
+		{
+			tile.rotateLeft();
+			tile.rotateLeft();
+			return false;
+		}
+		
+		tile.rotateRight();
+		if(getPossibleLocations(tile).size() == 0)
+		{
+			tile.rotateRight();
+			return false;
+		}
+		
+		tile.rotateRight();
+		return true;
 	}
 	
 	public Dimension getDimension()

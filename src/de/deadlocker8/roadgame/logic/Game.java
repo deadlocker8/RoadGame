@@ -46,6 +46,11 @@ public class Game
 		return board.getPossibleLocations(tile);
 	}
 	
+	public boolean tileCanBePlaced(Tile tile)
+	{
+		return board.tileCanBePlaced(tile);
+	}
+	
 	public void placeTile(Tile tile, Point2D position)
 	{
 		tile.setPosition(position);

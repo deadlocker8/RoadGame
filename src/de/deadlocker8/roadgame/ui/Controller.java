@@ -318,13 +318,33 @@ public class Controller
 		}
 			
 		game.setCurrentTile(nextTile);
-
-		stackPaneCurrentTile.getChildren().clear();
-		stackPaneCurrentTile.getChildren().add(createStackPaneForTile(game.getCurrentTile(), false, 0, 0));
 		
-		labelTilesRemaining.setText(String.valueOf(game.getBoard().getTilePack().getNumberOfTiles()));
+		if(game.tileCanBePlaced(game.getCurrentTile()))
+		{
+			stackPaneCurrentTile.getChildren().clear();
+			stackPaneCurrentTile.getChildren().add(createStackPaneForTile(game.getCurrentTile(), false, 0, 0));
+			
+			labelTilesRemaining.setText(String.valueOf(game.getBoard().getTilePack().getNumberOfTiles()));
 
-		updateGrid(game.getBoard(), game.getPossibleLocations(game.getCurrentTile()));			
+			updateGrid(game.getBoard(), game.getPossibleLocations(game.getCurrentTile()));	
+		}	
+		else
+		{
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Tile skipped");
+			alert.setHeaderText("");
+			alert.setContentText("The following tile has been skipped because it doesn't fit the current board:");
+			Stage dialogStage = (Stage)alert.getDialogPane().getScene().getWindow();		
+			alert.getDialogPane().setExpandableContent(createStackPaneForTile(game.getCurrentTile(), false, 0, 0));
+			alert.getDialogPane().setExpanded(true);			
+			dialogStage.getIcons().add(icon);
+			dialogStage.centerOnScreen();
+			alert.showAndWait();
+			
+			labelTilesRemaining.setText(String.valueOf(game.getBoard().getTilePack().getNumberOfTiles()));
+			
+			nextTile();
+		}			
 	}
 
 	public void rotateRight()

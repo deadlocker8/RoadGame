@@ -7,6 +7,7 @@ import de.deadlocker8.roadgame.tilepacks.TilePack;
 import de.deadlocker8.roadgame.tilepacks.TilePackAllPossibleTiles;
 import de.deadlocker8.roadgame.tilepacks.TilePackDefault;
 import de.deadlocker8.roadgame.tilepacks.TilePackTest;
+import de.deadlocker8.roadgame.tilepacks.TilePackTest2;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -50,6 +51,7 @@ public class SelectTilePackController
 		possibleTilePacks.add(new TilePackDefault());
 		possibleTilePacks.add(new TilePackTest());	
 		possibleTilePacks.add(new TilePackAllPossibleTiles());	
+		possibleTilePacks.add(new TilePackTest2());
 		
 		for(TilePack currentPack : possibleTilePacks)
 		{			
