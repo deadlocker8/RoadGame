@@ -3,6 +3,7 @@ package de.deadlocker8.roadgame.ui;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.Random;
 import java.util.ResourceBundle;
 
 import de.deadlocker8.roadgame.logic.Board;
@@ -11,6 +12,7 @@ import de.deadlocker8.roadgame.logic.Game;
 import de.deadlocker8.roadgame.logic.Textures;
 import de.deadlocker8.roadgame.logic.Tile;
 import de.deadlocker8.roadgame.tilepacks.TilePack;
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -21,6 +23,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
@@ -30,8 +33,10 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import logger.LogLevel;
 import logger.Logger;
+import tools.Worker;
 
 public class Controller
 {
@@ -39,7 +44,11 @@ public class Controller
 	@FXML private StackPane stackPaneCurrentTile;
 	@FXML private Button buttonRotate;
 	@FXML private Label labelTilesRemaining;
-	
+	@FXML private MenuItem menuItemReset;
+	@FXML private MenuItem menuItemSelectTilePack;
+	@FXML private MenuItem menuItemAutomaticTilePlacement;
+	@FXML private MenuItem menuItemAbout;
+
 	private Stage stage;
 	private Image icon = new Image("de/deadlocker8/roadgame/resources/icon.png");
 	private final ResourceBundle bundle = ResourceBundle.getBundle("de/deadlocker8/roadgame/main/", Locale.GERMANY);
@@ -48,30 +57,41 @@ public class Controller
 	private Textures textures;
 	private ZoomableScrollPane scrollPane;
 	private StackPane stackPanePlaceHolder;
-	
+	private final int SLEEP_TIME = 100;
+
 	public void init(Stage stage)
 	{
 		this.stage = stage;
+		
+		this.stage.setOnCloseRequest(new EventHandler<WindowEvent>()
+		{
+			@Override
+			public void handle(WindowEvent event)
+			{
+				Worker.shutdown();
+				System.exit(0);				
+			}
+		});
 		textures = new Textures();
 
 		anchorPaneGame.setStyle("-fx-border-color: #333333; -fx-border-width: 2px");
 		stackPaneCurrentTile.setStyle("-fx-border-color: #333333; -fx-border-width: 2px");
-		
+
 		labelTilesRemaining.setText("0");
-	
+
 		grid = new GridPane();
-		grid.setFocusTraversable(false);	
-		
-		scrollPane = new ZoomableScrollPane(grid);		
-		scrollPane.setPannable(true);		
+		grid.setFocusTraversable(false);
+
+		scrollPane = new ZoomableScrollPane(grid);
+		scrollPane.setPannable(true);
 		scrollPane.setFitToHeight(true);
-		scrollPane.setFitToWidth(true);		
+		scrollPane.setFitToWidth(true);
 		anchorPaneGame.getChildren().add(scrollPane);
 		AnchorPane.setTopAnchor(scrollPane, 0.0);
 		AnchorPane.setRightAnchor(scrollPane, 0.0);
 		AnchorPane.setBottomAnchor(scrollPane, 0.0);
-		AnchorPane.setLeftAnchor(scrollPane, 0.0);		
-		
+		AnchorPane.setLeftAnchor(scrollPane, 0.0);
+
 		anchorPaneGame.setOnMouseClicked(new EventHandler<MouseEvent>()
 		{
 			@Override
@@ -80,10 +100,10 @@ public class Controller
 				if(event.getButton().equals(MouseButton.SECONDARY))
 				{
 					rotateRight();
-				}				
+				}
 			}
 		});
-		
+
 		buttonRotate.setDisable(true);
 		Label labelPlaceHolder = new Label("Please select Tilepack first.");
 		labelPlaceHolder.setStyle("-fx-font-weight: bold; -fx-font-size: 16;");
@@ -160,7 +180,7 @@ public class Controller
 	private void placeTile(int x, int y)
 	{
 		game.placeTile(game.getCurrentTile(), new Point2D(x, y));
-		nextTile();
+		nextTile(false);
 	}
 
 	public StackPane createStackPaneForTile(Tile tile, boolean possible, int x, int y)
@@ -190,28 +210,28 @@ public class Controller
 		else
 		{
 			stack.getChildren().add(new ImageView(textures.getImageGrass()));
-			
-			//North
-			stack.getChildren().add(getImageForEdge(tile.getN()));	
 
-			//East
+			// North
+			stack.getChildren().add(getImageForEdge(tile.getN()));
+
+			// East
 			ImageView imageViewEast = getImageForEdge(tile.getE());
 			imageViewEast.setRotate(90);
-			stack.getChildren().add(imageViewEast);			
+			stack.getChildren().add(imageViewEast);
 
-			//South
+			// South
 			ImageView imageViewSouth = getImageForEdge(tile.getS());
 			imageViewSouth.setRotate(180);
-			stack.getChildren().add(imageViewSouth);			
+			stack.getChildren().add(imageViewSouth);
 
-			//West			
+			// West
 			ImageView imageViewWest = getImageForEdge(tile.getW());
 			imageViewWest.setRotate(270);
-			stack.getChildren().add(imageViewWest);	
-			
-			//Center					
+			stack.getChildren().add(imageViewWest);
+
+			// Center
 			ImageView imageViewCenter = getImageForCenter(tile);
-			stack.getChildren().add(imageViewCenter);	
+			stack.getChildren().add(imageViewCenter);
 		}
 
 		stack.setStyle("-fx-border-color: #cccccc; -fx-border-width: 1px;");
@@ -225,64 +245,64 @@ public class Controller
 			case GRASS:
 				return new ImageView(textures.getImageEmpty());
 			case ROAD:
-				return new ImageView(textures.getImageRoad());			
+				return new ImageView(textures.getImageRoad());
 			case CASTLE:
-				return new ImageView(textures.getImageCastle());			
+				return new ImageView(textures.getImageCastle());
 			default:
 				return new ImageView(textures.getImageEmpty());
 		}
 	}
-	
+
 	public ImageView getImageForCenter(Tile tile)
-	{		
+	{
 		switch(tile.getC())
 		{
 			case EMPTY:
 				return new ImageView(textures.getImageEmpty());
 			case CASTLE:
-				return new ImageView(textures.getImageCenterCastle());			
+				return new ImageView(textures.getImageCenterCastle());
 			case CASTLE_TRIANGLE:
-				ImageView iv = new ImageView(textures.getImageCenterCastleTriangle());			
+				ImageView iv = new ImageView(textures.getImageCenterCastleTriangle());
 				if(tile.getN().equals(EdgeType.CASTLE))
 				{
 					if(tile.getW().equals(EdgeType.CASTLE))
 					{
-						//North and West
+						// North and West
 						iv.setRotate(270);
 					}
 				}
-				
+
 				if(tile.getS().equals(EdgeType.CASTLE))
-				{					
+				{
 					if(tile.getE().equals(EdgeType.CASTLE))
 					{
-						//South and East
+						// South and East
 						iv.setRotate(90);
 					}
 					else
 					{
-						//South and West
+						// South and West
 						iv.setRotate(180);
 					}
-				}				
+				}
 				return iv;
 			case CHURCH:
 				return new ImageView(textures.getImageCenterChurch());
 			case ROAD:
-				ImageView ivRoad = new ImageView(textures.getImageCenterRoad());				
-				
+				ImageView ivRoad = new ImageView(textures.getImageCenterRoad());
+
 				if(tile.getE().equals(EdgeType.CASTLE))
-				{				
+				{
 					ivRoad.setRotate(90);
 				}
-				
+
 				if(tile.getS().equals(EdgeType.CASTLE))
-				{					
+				{
 					ivRoad.setRotate(180);
 				}
-				
+
 				if(tile.getW().equals(EdgeType.CASTLE))
-				{					
+				{
 					ivRoad.setRotate(270);
 				}
 				return ivRoad;
@@ -306,45 +326,48 @@ public class Controller
 		return false;
 	}
 
-	private void nextTile()
+	private void nextTile(boolean automaticPlacing)
 	{
 		Tile nextTile = game.getNextTile();
-		if(nextTile == null)		
-		{			
+		if(nextTile == null)
+		{
 			game.setCurrentTile(null);
-			stackPaneCurrentTile.getChildren().clear();			
+			stackPaneCurrentTile.getChildren().clear();
 			updateGrid(game.getBoard(), null);
 			return;
 		}
-			
+
 		game.setCurrentTile(nextTile);
-		
+
 		if(game.tileCanBePlaced(game.getCurrentTile()))
 		{
 			stackPaneCurrentTile.getChildren().clear();
 			stackPaneCurrentTile.getChildren().add(createStackPaneForTile(game.getCurrentTile(), false, 0, 0));
-			
+
 			labelTilesRemaining.setText(String.valueOf(game.getBoard().getTilePack().getNumberOfTiles()));
 
-			updateGrid(game.getBoard(), game.getPossibleLocations(game.getCurrentTile()));	
-		}	
+			updateGrid(game.getBoard(), game.getPossibleLocations(game.getCurrentTile()));
+		}
 		else
 		{
-			Alert alert = new Alert(AlertType.INFORMATION);
-			alert.setTitle("Tile skipped");
-			alert.setHeaderText("");
-			alert.setContentText("The following tile has been skipped because it doesn't fit the current board:");
-			Stage dialogStage = (Stage)alert.getDialogPane().getScene().getWindow();		
-			alert.getDialogPane().setExpandableContent(createStackPaneForTile(game.getCurrentTile(), false, 0, 0));
-			alert.getDialogPane().setExpanded(true);			
-			dialogStage.getIcons().add(icon);
-			dialogStage.centerOnScreen();
-			alert.showAndWait();
-			
+			if(!automaticPlacing)
+			{
+				Alert alert = new Alert(AlertType.INFORMATION);
+				alert.setTitle("Tile skipped");
+				alert.setHeaderText("");
+				alert.setContentText("The following tile has been skipped because it doesn't fit the current board:");
+				Stage dialogStage = (Stage)alert.getDialogPane().getScene().getWindow();
+				alert.getDialogPane().setExpandableContent(createStackPaneForTile(game.getCurrentTile(), false, 0, 0));
+				alert.getDialogPane().setExpanded(true);
+				dialogStage.getIcons().add(icon);
+				dialogStage.centerOnScreen();
+				alert.showAndWait();
+			}
+
 			labelTilesRemaining.setText(String.valueOf(game.getBoard().getTilePack().getNumberOfTiles()));
-			
-			nextTile();
-		}			
+
+			nextTile(automaticPlacing);
+		}
 	}
 
 	public void rotateRight()
@@ -354,16 +377,16 @@ public class Controller
 			game.getCurrentTile().rotateRight();
 			stackPaneCurrentTile.getChildren().clear();
 			stackPaneCurrentTile.getChildren().add(createStackPaneForTile(game.getCurrentTile(), false, 0, 0));
-	
+
 			updateGrid(game.getBoard(), game.getPossibleLocations(game.getCurrentTile()));
 		}
 	}
-	
+
 	public void reset()
 	{
 		init(stage);
 	}
-	
+
 	public void selectTilePack()
 	{
 		try
@@ -387,7 +410,7 @@ public class Controller
 			Logger.log(LogLevel.ERROR, Logger.exceptionToString(io));
 		}
 	}
-	
+
 	public void setTilePack(TilePack tilePack)
 	{
 		buttonRotate.setDisable(false);
@@ -395,12 +418,107 @@ public class Controller
 		{
 			anchorPaneGame.getChildren().remove(stackPanePlaceHolder);
 		}
-		
+
 		game = new Game(tilePack);
-		
+
 		updateGrid(game.getBoard(), null);
 
-		nextTile();
+		nextTile(false);
+	}
+
+	public void automaticTilePlacement()
+	{
+		if(game != null && game.getBoard() != null)
+		{
+			buttonRotate.setDisable(true);
+			menuItemReset.setDisable(true);
+			menuItemSelectTilePack.setDisable(true);
+			menuItemAutomaticTilePlacement.setDisable(true);
+			menuItemAbout.setDisable(true);
+
+			Worker.runLater(() -> {
+				while(game.getCurrentTile() != null)
+				{
+					if(couldPlaceTileAutomatically())
+					{
+						try
+						{
+							Thread.sleep(SLEEP_TIME);
+						}
+						catch(Exception e)
+						{
+						}
+						continue;
+					}
+
+					game.getCurrentTile().rotateRight();
+					if(couldPlaceTileAutomatically())
+					{
+						try
+						{
+							Thread.sleep(SLEEP_TIME);
+						}
+						catch(Exception e)
+						{
+						}
+						continue;
+					}
+
+					game.getCurrentTile().rotateRight();
+					if(couldPlaceTileAutomatically())
+					{
+						try
+						{
+							Thread.sleep(SLEEP_TIME);
+						}
+						catch(Exception e)
+						{
+						}
+						continue;
+					}
+
+					game.getCurrentTile().rotateRight();
+					if(couldPlaceTileAutomatically())
+					{
+						try
+						{
+							Thread.sleep(SLEEP_TIME);
+						}
+						catch(Exception e)
+						{
+						}
+						continue;
+					}
+				}
+				
+				Platform.runLater(()->{
+					buttonRotate.setDisable(false);
+					menuItemReset.setDisable(false);
+					menuItemSelectTilePack.setDisable(false);
+					menuItemAutomaticTilePlacement.setDisable(false);
+					menuItemAbout.setDisable(false);
+				});
+			});
+		}
+	}
+
+	private boolean couldPlaceTileAutomatically()
+	{
+		ArrayList<Point2D> possibleLocations = game.getPossibleLocations(game.getCurrentTile());
+
+		if(possibleLocations.size() > 0)
+		{
+			Random random = new Random();
+			int index = random.nextInt(possibleLocations.size());
+
+			Platform.runLater(() -> {
+				placeTile((int)possibleLocations.get(index).getX(), (int)possibleLocations.get(index).getY());
+				nextTile(true);
+			});
+			return true;
+		}
+
+		return false;
 	}
 
 	public void about()

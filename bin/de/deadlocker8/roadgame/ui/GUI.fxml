@@ -6,6 +6,7 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
@@ -52,9 +53,12 @@
         <menus>
           <Menu mnemonicParsing="false" text="Menu">
             <items>
-              <MenuItem mnemonicParsing="false" onAction="#reset" text="Reset" />
-                  <MenuItem mnemonicParsing="false" onAction="#selectTilePack" text="Select Tilepack" />
-                  <MenuItem mnemonicParsing="false" onAction="#about" text="About" />
+              <MenuItem fx:id="menuItemReset" mnemonicParsing="false" onAction="#reset" text="Reset" />
+                  <MenuItem fx:id="menuItemSelectTilePack" mnemonicParsing="false" onAction="#selectTilePack" text="Select Tilepack" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem fx:id="menuItemAutomaticTilePlacement" mnemonicParsing="false" onAction="#automaticTilePlacement" text="Automatic Tile Placement" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem fx:id="menuItemAbout" mnemonicParsing="false" onAction="#about" text="About" />
             </items>
           </Menu>
         </menus>

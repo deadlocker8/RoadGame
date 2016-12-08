@@ -173,32 +173,30 @@ public class Board
 	{
 		if(getPossibleLocations(tile).size() == 0)
 		{
-			return false;
-		}
-		
-		tile.rotateRight();
-		if(getPossibleLocations(tile).size() == 0)
-		{
-			tile.rotateLeft();
-			return false;
-		}
-		
-		tile.rotateRight();
-		if(getPossibleLocations(tile).size() == 0)
-		{
-			tile.rotateLeft();
-			tile.rotateLeft();
-			return false;
-		}
-		
-		tile.rotateRight();
-		if(getPossibleLocations(tile).size() == 0)
-		{
 			tile.rotateRight();
-			return false;
+			if(getPossibleLocations(tile).size() == 0)
+			{
+				tile.rotateRight();
+				if(getPossibleLocations(tile).size() == 0)
+				{
+					tile.rotateRight();
+					if(getPossibleLocations(tile).size() == 0)
+					{
+						tile.rotateRight();
+						return false;
+					}
+				}
+				else
+				{
+					tile.rotateLeft();
+					tile.rotateLeft();
+				}
+			}
+			else
+			{
+				tile.rotateLeft();
+			}
 		}
-		
-		tile.rotateRight();
 		return true;
 	}
 	

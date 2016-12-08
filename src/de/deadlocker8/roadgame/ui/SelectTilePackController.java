@@ -113,8 +113,8 @@ public class SelectTilePackController
 				{
 					if(event.getButton().equals(MouseButton.PRIMARY))
 					{
-						controller.setTilePack(currentPack);
 						stage.close();
+						controller.setTilePack(currentPack);						
 					}				
 				}
 			});
