@@ -8,14 +8,16 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class PossibleTilesController
 {
-	@FXML private VBox vbox;
+	@FXML private ScrollPane scrollPane;
+	@FXML private FlowPane flowPane;
 	@FXML private Button buttonBack;
 
 	private Stage stage;	
@@ -24,8 +26,11 @@ public class PossibleTilesController
 	{
 		this.stage = stage;
 		
-		vbox.setSpacing(10.0);
-		vbox.setAlignment(Pos.TOP_CENTER);
+		flowPane.setVgap(25);
+	    flowPane.setHgap(25);
+	    
+	    flowPane.prefWidthProperty().bind(scrollPane.widthProperty());
+	    flowPane.prefHeightProperty().bind(scrollPane.heightProperty());
 		
 		for(TileType key : tilePack.getTiles().keySet())
 		{
@@ -42,7 +47,7 @@ public class PossibleTilesController
 			hbox.getChildren().add(currentStack);			
 			hbox.getChildren().add(labelTimes);
 			HBox.setMargin(labelTimes, new Insets(0, 0, 0, 25));
-			vbox.getChildren().add(hbox);
+			flowPane.getChildren().add(hbox);
 		}
 	}
 	

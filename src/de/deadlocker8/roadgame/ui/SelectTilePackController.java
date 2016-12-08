@@ -78,8 +78,10 @@ public class SelectTilePackController
 						newStage.initModality(Modality.APPLICATION_MODAL);
 						newStage.setTitle("Possible Tiles");
 						newStage.setScene(new Scene(root));
+						newStage.setMinWidth(400);
+						newStage.setMinHeight(400);
 						newStage.getIcons().add(icon);
-						newStage.setResizable(false);
+						newStage.setResizable(true);
 						PossibleTilesController newController = fxmlLoader.getController();
 						newController.init(newStage, controller, currentPack);
 						newStage.show();
