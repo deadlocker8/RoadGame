@@ -11,8 +11,7 @@ public class TilePackTest2 extends TilePack
 		super("Test 2");
 		
 		tiles = new HashMap<>();		
-		tiles.put(TileType.ROAD_END, 1);
 		tiles.put(TileType.CASTLE_FULL, 1);
-		tiles.put(TileType.ROAD_CURVE, 1);		
+		tiles.put(TileType.CASTLE_TRIANGLE, 1);		
 	}
 }

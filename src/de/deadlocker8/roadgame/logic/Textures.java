@@ -62,5 +62,5 @@ public class Textures
 	public Image getImageCenterRoad()
 	{
 		return imageCenterRoad;
-	}		
+	}	
 }

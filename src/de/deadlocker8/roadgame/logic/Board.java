@@ -11,24 +11,24 @@ public class Board
 	private ArrayList<Tile> tiles;
 
 	public Board(TilePack tilePack)
-	{	
+	{
 		this.tilePack = tilePack;
-		this.tiles = new ArrayList<>();			
+		this.tiles = new ArrayList<>();
 		initBoard();
 	}
-	
+
 	private void initBoard()
-	{		
+	{
 		TileType tileType = getRandomTile();
 		if(tileType != null)
-		{	
+		{
 			Tile startTile = new Tile(tileType);
 			startTile.setPosition(new Point2D(0, 0));
-			
-			tiles.add(startTile);	
-		}	
+
+			tiles.add(startTile);
+		}
 	}
-	
+
 	public TilePack getTilePack()
 	{
 		return tilePack;
@@ -38,7 +38,7 @@ public class Board
 	{
 		return tiles;
 	}
-	
+
 	public Tile getTile(int x, int y)
 	{
 		for(Tile currentTile : tiles)
@@ -48,15 +48,15 @@ public class Board
 				return currentTile;
 			}
 		}
-		
+
 		return null;
 	}
-	
+
 	public TileType getRandomTile()
 	{
 		return tilePack.getRandomTile();
 	}
-	
+
 	public boolean containsTileAtPosition(int x, int y)
 	{
 		for(Tile currentTile : tiles)
@@ -66,108 +66,144 @@ public class Board
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
-	
+
 	public ArrayList<Point2D> getFreeEdges(Tile tile, Tile playerTile)
 	{
 		ArrayList<Point2D> freeEdges = new ArrayList<>();
-		
+
 		int x = (int)tile.getPosition().getX();
 		int y = (int)tile.getPosition().getY();
-		
-		//North
-		if(!containsTileAtPosition(x, y-1))
-		{	
-			if(isCrossCheckValid(playerTile, x, y-1))
-			{
-				freeEdges.add(new Point2D(x, y-1));
-			}			
-		}
-		
-		//East
-		if(!containsTileAtPosition(x+1, y))
+
+		// North
+		if(!containsTileAtPosition(x, y - 1))
 		{
-			if(isCrossCheckValid(playerTile, x+1, y))
+			if(isCrossCheckValid(playerTile, x, y - 1))
 			{
-				freeEdges.add(new Point2D(x+1, y));
-			}		
+				freeEdges.add(new Point2D(x, y - 1));
+			}
 		}
-				
-		//South
-		if(!containsTileAtPosition(x, y+1))
-		{	
-			if(isCrossCheckValid(playerTile, x, y+1))
-			{						
-				freeEdges.add(new Point2D(x, y+1));
-			}			
-		}
-		
-		//West
-		if(!containsTileAtPosition(x-1, y))
+
+		// East
+		if(!containsTileAtPosition(x + 1, y))
 		{
-			if(isCrossCheckValid(playerTile, x-1, y))
+			if(isCrossCheckValid(playerTile, x + 1, y))
 			{
-				freeEdges.add(new Point2D(x-1, y));
-			}		
+				freeEdges.add(new Point2D(x + 1, y));
+			}
 		}
-		
+
+		// South
+		if(!containsTileAtPosition(x, y + 1))
+		{
+			if(isCrossCheckValid(playerTile, x, y + 1))
+			{
+				freeEdges.add(new Point2D(x, y + 1));
+			}
+		}
+
+		// West
+		if(!containsTileAtPosition(x - 1, y))
+		{
+			if(isCrossCheckValid(playerTile, x - 1, y))
+			{
+				freeEdges.add(new Point2D(x - 1, y));
+			}
+		}
+
 		return freeEdges;
 	}
-	
+
 	private boolean isCrossCheckValid(Tile tile, int x, int y)
 	{
-		//North
-		if(containsTileAtPosition(x, y-1))
-		{			
-			if(!tile.getN().equals(getTile(x, y-1).getS()))
-			{
-				return false;
-			}			
-		}
-		
-		//East
-		if(containsTileAtPosition(x+1, y))
+		// North
+		if(containsTileAtPosition(x, y - 1))
 		{
-			if(!tile.getE().equals(getTile(x+1, y).getW()))
+			Tile nextTile = getTile(x, y - 1);
+
+			if(tile.getN().equals(EdgeType.CASTLE) || tile.getN().equals(EdgeType.CASTLE_END))
+			{
+				if(!(nextTile.getS().equals(EdgeType.CASTLE_END) || nextTile.getS().equals(EdgeType.CASTLE)))
+				{
+					return false;
+				}
+			}
+			else if(!tile.getN().equals(nextTile.getS()))
 			{
 				return false;
-			}	
+			}
 		}
-				
-		//South
-		if(containsTileAtPosition(x, y+1))
+
+		// East
+		if(containsTileAtPosition(x + 1, y))
 		{
-			if(!tile.getS().equals(getTile(x, y+1).getN()))
+			Tile nextTile = getTile(x + 1, y);
+
+			if(tile.getE().equals(EdgeType.CASTLE) || tile.getE().equals(EdgeType.CASTLE_END))
+			{
+				if(!(nextTile.getW().equals(EdgeType.CASTLE_END) || nextTile.getW().equals(EdgeType.CASTLE)))
+				{
+					return false;
+				}
+			}
+			else if(!tile.getE().equals(nextTile.getW()))
 			{
 				return false;
-			}	
+			}
 		}
-		
-		//West
-		if(containsTileAtPosition(x-1, y))
+
+		// South
+		if(containsTileAtPosition(x, y + 1))
 		{
-			if(!tile.getW().equals(getTile(x-1, y).getE()))
+			Tile nextTile = getTile(x, y + 1);
+
+			if(tile.getS().equals(EdgeType.CASTLE) || tile.getS().equals(EdgeType.CASTLE_END))
+			{
+				if(!(nextTile.getN().equals(EdgeType.CASTLE_END) || nextTile.getN().equals(EdgeType.CASTLE)))
+				{
+					return false;
+				}
+			}
+			else if(!tile.getS().equals(nextTile.getN()))
 			{
 				return false;
-			}	
+			}
 		}
-		
+
+		// West
+		if(containsTileAtPosition(x - 1, y))
+		{
+			Tile nextTile = getTile(x - 1, y);
+
+			if(tile.getW().equals(EdgeType.CASTLE) || tile.getW().equals(EdgeType.CASTLE_END))
+			{
+				if(!(nextTile.getE().equals(EdgeType.CASTLE_END) || nextTile.getE().equals(EdgeType.CASTLE)))
+				{
+					return false;
+				}
+			}
+			else if(!tile.getW().equals(nextTile.getE()))
+			{
+				return false;
+			}
+		}
+
 		return true;
 	}
-	
+
 	public ArrayList<Point2D> getPossibleLocations(Tile tile)
 	{
 		ArrayList<Point2D> possibleLocations = new ArrayList<>();
-		
+
 		for(Tile currentTile : tiles)
 		{
 			possibleLocations.addAll(getFreeEdges(currentTile, tile));
-		}		
-		
+		}
+
 		return possibleLocations;
-	}	
+	}
 
 	public boolean tileCanBePlaced(Tile tile)
 	{
@@ -199,40 +235,40 @@ public class Board
 		}
 		return true;
 	}
-	
+
 	public Dimension getDimension()
 	{
 		int minX = 0;
 		int maxX = 0;
 		int minY = 0;
 		int maxY = 0;
-		
+
 		for(Tile currentTile : tiles)
 		{
 			if((int)currentTile.getPosition().getX() < minX)
 			{
 				minX = (int)currentTile.getPosition().getX();
 			}
-			
+
 			if((int)currentTile.getPosition().getX() > maxX)
 			{
 				maxX = (int)currentTile.getPosition().getX();
 			}
-			
+
 			if((int)currentTile.getPosition().getY() < minY)
 			{
 				minY = (int)currentTile.getPosition().getY();
 			}
-			
+
 			if((int)currentTile.getPosition().getY() > maxY)
 			{
 				maxY = (int)currentTile.getPosition().getY();
 			}
-		}	
-		
-		return new Dimension(minX, maxX, minY, maxY);		
+		}
+
+		return new Dimension(minX, maxX, minY, maxY);
 	}
-	
+
 	public void addTile(Tile tile)
 	{
 		tiles.add(tile);

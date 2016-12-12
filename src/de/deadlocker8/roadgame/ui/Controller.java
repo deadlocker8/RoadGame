@@ -248,6 +248,8 @@ public class Controller
 				return new ImageView(textures.getImageRoad());
 			case CASTLE:
 				return new ImageView(textures.getImageCastle());
+			case CASTLE_END:
+				return new ImageView(textures.getImageCastle());
 			default:
 				return new ImageView(textures.getImageEmpty());
 		}

@@ -4,35 +4,30 @@ import javafx.geometry.Point2D;
 
 public class Tile
 {
+	private TileType type;
 	private EdgeType N;
 	private EdgeType E;
 	private EdgeType S;
 	private EdgeType W;	
 	private CenterType C;
 	private Point2D position;
+	//TODO use
+	private boolean marked;
 	
-	public Tile(EdgeType N, EdgeType E, EdgeType S, EdgeType W, CenterType C, int x, int y)
+	public Tile(TileType type, int x, int y)
 	{		
-		this.N = N;
-		this.E = E;
-		this.S = S;
-		this.W = W;
-		this.C = C;
+		this.type = type;
+		this.N = type.getN();
+		this.E = type.getE();
+		this.S = type.getS();
+		this.W = type.getW();
+		this.C = type.getC();
 		this.position = new Point2D(x, y);
 	}
 	
-	public Tile(EdgeType N, EdgeType E, EdgeType S, EdgeType W, CenterType C)
-	{		
-		this.N = N;
-		this.E = E;
-		this.S = S;
-		this.W = W;
-		this.C = C;
-		this.position = null;
-	}	
-	
 	public Tile(TileType type)
 	{		
+		this.type = type;
 		this.N = type.getN();
 		this.E = type.getE();
 		this.S = type.getS();
@@ -64,6 +59,11 @@ public class Tile
 	public CenterType getC()
 	{
 		return C;
+	}
+	
+	public TileType getType()
+	{
+		return type;
 	}
 
 	public Point2D getPosition()
