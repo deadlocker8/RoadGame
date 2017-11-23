@@ -34,7 +34,6 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import logger.LogLevel;
 import logger.Logger;
 import tools.Worker;
 
@@ -409,7 +408,7 @@ public class Controller
 		}
 		catch(IOException io)
 		{
-			Logger.log(LogLevel.ERROR, Logger.exceptionToString(io));
+			Logger.error(io);
 		}
 	}
 

@@ -38,7 +38,7 @@ public class Main extends Application
 		}
 		catch(Exception e)
 		{
-			Logger.log(LogLevel.ERROR, Logger.exceptionToString(e));
+			Logger.error(e);
 		}
 	}
 
@@ -47,7 +47,7 @@ public class Main extends Application
 		if(Arrays.asList(args).contains("debug"))
 		{
 			Logger.setLevel(LogLevel.ALL);
-			Logger.log(LogLevel.INFO, "Running in Debug Mode");
+			Logger.info("Running in Debug Mode");
 		}
 		else
 		{
@@ -55,7 +55,7 @@ public class Main extends Application
 		}
 		
 		ResourceBundle bundle = ResourceBundle.getBundle("de/deadlocker8/roadgame/main/", Locale.GERMANY);			
-		Logger.log(LogLevel.INFO, bundle.getString("app.name") + " - v" + bundle.getString("version.name") + " - (versioncode: " + bundle.getString("version.code") + ") from " + bundle.getString("version.date"));	
+		Logger.info(bundle.getString("app.name") + " - v" + bundle.getString("version.name") + " - (versioncode: " + bundle.getString("version.code") + ") from " + bundle.getString("version.date"));	
 
 		launch(args);
 	}

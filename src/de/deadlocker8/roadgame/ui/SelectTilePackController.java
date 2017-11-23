@@ -28,7 +28,6 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import logger.LogLevel;
 import logger.Logger;
 
 public class SelectTilePackController
@@ -89,7 +88,7 @@ public class SelectTilePackController
 					}
 					catch(IOException io)
 					{
-						Logger.log(LogLevel.ERROR, Logger.exceptionToString(io));
+						Logger.error(io);
 					}
 					
 				}
